@@ -1,0 +1,36 @@
+{
+    "name": "chatbox/httpauth",
+    "authors": [
+        {
+            "name": "mikakane",
+            "email": "mikakane2@gmail.com"
+        }
+    ],
+    "autoload":{
+      "classmap": [
+        "database"
+      ],
+      "psr-4": {
+        "Chatbox\\HttpAuth\\": "modules/httpauth/src",
+        "Chatbox\\HttpBase\\": "modules/httpbase/src",
+        "Chatbox\\Auth\\": "modules/auth/src",
+        "Chatbox\\Supports\\": "modules/supports/src"
+      }
+    },
+    "autoload-dev": {
+      "classmap":["./tests/unit/"],
+      "psr-4": {
+        "Chatbox\\Auth\\Tests\\": "modules/auth/tests"
+      }
+    },
+    "require": {
+        "laravel/lumen": "^5.1",
+        "fzaninotto/faker": "^1.5"
+    },
+    "require-dev": {
+      "phpunit/phpunit": "~4.0",
+      "codeception/codeception": "2.0.*",
+      "flow/jsonpath": "^0.3.0"
+    }
+
+}

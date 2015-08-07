@@ -1,0 +1,27 @@
+# Codeception Test Suite Configuration
+
+# suite for unit (internal) tests.
+class_name: ApiTester
+modules:
+    enabled: [PhpBrowser,REST,ApiHelper]
+    config:
+      PhpBrowser:
+        url: http://localhost:8000/
+      REST:
+        url: http://localhost:8000
+env:
+  dev:
+    modules:
+        config:
+          PhpBrowser:
+            url: http://localhost:8000/
+          REST:
+            url: http://localhost:8000
+  heroku:
+    modules:
+        config:
+          PhpBrowser:
+            url: https://chatbox-inc.com/
+          REST:
+            url: https://chatbox-inc.com/v1/
+
