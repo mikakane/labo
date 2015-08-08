@@ -1,4 +1,9 @@
 <?php
+namespace Chatbox\Auth\Tests\Repositories\Illuminate;
+
+use Chatbox\Auth\Repositories\Illuminate\UserIlluminateRepository;
+use Chatbox\Auth\Repositories\Illuminate\CredentialIlluminateRepository;
+
 
 /**
  * Created by PhpStorm.
@@ -6,7 +11,7 @@
  * Date: 15/08/02
  * Time: 15:08
  */
-class UserIlluminateRepositroryTest extends TestCase
+class UserIlluminateRepositroryTest extends \PHPUnit_Framework_TestCase
 {
 
     /** @var  \Chatbox\Auth\Repositories\CredentialRepositoryInterface */
@@ -18,10 +23,9 @@ class UserIlluminateRepositroryTest extends TestCase
     {
         parent::setUp();
 
-        $this->repository = new UserIlluminateRepositrory(
-            "cb_user_list",
-            new \Chatbox\Auth\Repositories\Illuminate\CredentialIlluminateRepository("cb_user_credential")
-        );
+        $credRepository = new CredentialIlluminateRepository("cb_user_credential");
+
+        $this->repository = new UserIlluminateRepositrory("cb_user_list", $credRepository);
     }
 
     /**

@@ -3,6 +3,7 @@ namespace Chatbox\Auth\Tests\Repositories\Illuminate;
 use Chatbox\Auth\Repositories\CredentialRepositoryInterface;
 use Chatbox\Auth\Repositories\Illuminate\CredentialIlluminateRepository;
 
+use Chatbox\Auth\Entity\CredentialEntity;
 /**
  * Created by PhpStorm.
  * User: mkkn
@@ -24,25 +25,27 @@ class CredentialIlluminateepositroryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * hogehoge
+     *
      */
     public function testBind(){
 
         $uid = (new \Chatbox\Supports\UidGenerator())->random();
 
-        $creds = $this->repository->findByUser($uid);
-        $this->assertEquals(0,count($creds));
+        // 新しいIDで存在しないことを確認
+        $cred = $this->repository->findByUser($uid,"password");
+        $this->assertNull($cred);
 
+        // 新しい認証情報を作成
         $credential = $this->repository->create(["type" => "password","hash"=>"hogehoge"]);
         $this->repository->bind($uid,$credential);
 
-        $creds = $this->repository->findByUser($uid);
-        $this->assertEquals(1,count($creds));
+        $cred = $this->repository->findByUser($uid,"password");
+        $this->assertInstanceOf(CredentialEntity::class,$cred);
 
         $this->repository->unbind($uid,"password");
 
-        $creds = $this->repository->findByUser($uid);
-        $this->assertEquals(0,count($creds));
+        $creds = $this->repository->findByUser($uid,"password");
+        $this->assertNull($cred);
     }
 
 }

@@ -12,16 +12,18 @@ use Chatbox\Auth\Entity\UserEntity;
 interface CredentialRepositoryInterface {
 
     /**
+     * クレデンシャルエンティティを作成する。
      * @param array $credential
      * @return CredentialEntity
      */
     public function create(array $credential);
 
     /**
+     *
      * @param UserEntity $userEntity
-     * @return CredentialEntity[] with key that showes type
+     * @return CredentialEntity
      */
-    public function findByUser($uid);
+    public function findByUser($uid,$type);
 
     /**
      * @param string $type
@@ -33,7 +35,7 @@ interface CredentialRepositoryInterface {
     /**
      * @param UserEntity $userEntity
      * @param CredentialEntity $credentialEntity
-     * @throw CredentialRepositoryBindException
+     * @throw CredentialRepositoryBindException when fail to bind
      * @return void
      */
     public function bind($uid,CredentialEntity $credentialEntity);
@@ -51,6 +53,11 @@ interface CredentialRepositoryInterface {
 
 class CredentialRepositoryException extends \Exception{}
 
+/**
+ * Class CredentialRepositoryBindException
+ * バインド処理失敗時の例外
+ * @package Chatbox\Auth\Repositories
+ */
 class CredentialRepositoryBindException extends CredentialRepositoryException{}
 
 class CredentialRepositoryUnbindException extends CredentialRepositoryException{}

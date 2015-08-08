@@ -12,22 +12,76 @@ namespace Chatbox\Auth\Entity;
  */
 class CredentialEntity {
 
-    protected $user_uid;
+    const TYPE_PASSWORD="password";
+
+    protected $userUid;
     protected $type;
     protected $hash;
 
-    function __construct(array $data)
+    /**
+     * CredentialEntity constructor.
+     * @param $userUid
+     * @param $type
+     * @param $hash
+     */
+    public function __construct($userUid, $type, $hash)
     {
-        foreach($this->toArray() as $key=>$value){
-            if(isset($data[$key])){
-                $this->{$key} = $data[$key];
-            }
-        }
+        $this->setUserUid($userUid);
+        $this->setType($type);
+        $this->setHash($hash);
     }
 
-    public function toArray(){
-        return get_object_vars($this);
+
+    /**
+     * @return mixed
+     */
+    public function getUserUid()
+    {
+        return $this->userUid;
     }
+
+    /**
+     * @param mixed $userUid
+     */
+    public function setUserUid($userUid)
+    {
+        $this->userUid = $userUid;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * @param mixed $hash
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
+    }
+
+
+
 
 
 

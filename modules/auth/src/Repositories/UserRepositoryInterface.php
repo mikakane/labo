@@ -13,12 +13,7 @@ use Chatbox\Auth\Entity\UserEntity;
 interface UserRepositoryInterface {
 
     /**
-     * @param CredentialEntity $credentialEntity
-     * @return UserEntity
-     */
-    public function create(array $userData);
-
-    /**
+     * Uidからユーザエンティティを取得する
      * @param CredentialEntity $credentialEntity
      * @return UserEntity
      * @throw UserRepositoryNotFoundException
@@ -26,17 +21,19 @@ interface UserRepositoryInterface {
     public function getByUid($uid);
 
     /**
+     * ユーザエンティティの一覧を取得
      * @param array $condition
      * @return UserEntity[]
      */
     public function find(array $condition);
 
     /**
+     * ユーザエンティティを新規挿入する
      * @param UserEntity $credentialEntity
      * @param CredentialEntity $credentialEntity
-     * @return string uid
+     * @return CredentialEntity $credentialEntity
      */
-    public function register(UserEntity $credentialEntity,CredentialEntity $credentialEntity);
+    public function register(UserEntity $userEntity);
 
     /**
      * @param UserEntity $credentialEntity
@@ -46,19 +43,13 @@ interface UserRepositoryInterface {
     public function deleteUser(UserEntity $credentialEntity);
 
     /**
-     * @param UserEntity $credentialEntity
-     * @throw UserRepositoryNotFoundException
-     * @return void
-     */
-    public function frozenUser(UserEntity $credentialEntity);
-
-    /**
+     * ユーザエンティティを更新する
      * @param UserEntity $credentialEntity
      * @param $data
      * @throw UserRepositoryNotFoundException
      * @return void
      */
-    public function updateData(UserEntity $credentialEntity,array $data);
+    public function updateData(UserEntity $credentialEntity);
 
 }
 

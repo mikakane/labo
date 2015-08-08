@@ -6,37 +6,12 @@ namespace Chatbox\Auth\Entity;
  * Date: 15/07/29
  * Time: 18:11
  */
+use Carbon\Carbon;
+use Chatbox\Auth\Entity\UserEntity\UserEntityPropertyTrait;
 
-/**
- *
- */
 class UserEntity{
 
-    const STATUS_FROZEN = 1;
-
-    protected $uid;
-    protected $email;
-    protected $is_frozen;
-    protected $created_at;
-    protected $updated_at;
-
-
-    function __construct(array $data)
-    {
-        foreach($this as $key=>$value){
-            if(isset($data[$key])){
-                $this->{$key} = $value;
-            }
-        }
-    }
-
-    public function getUid(){
-        return $this->uid;
-    }
-
-    public function toArray(){
-        return get_object_vars($this);
-    }
+    use UserEntityPropertyTrait;
 
 
 }
