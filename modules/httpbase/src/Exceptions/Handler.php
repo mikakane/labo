@@ -38,20 +38,27 @@ class Handler extends ExceptionHandler {
      */
     public function render($request, Exception $e)
     {
-        $data = [
-            "status" => "ERROR",
-            "message" => $e->getMessage(),
-            "line" => $e->getLine(),
-            "file" => $e->getFile(),
-            "message" => $e->getMessage(),
-            "class" => get_class($e),
-        ];
+        if($e instanceof HttpBadRequestException){
+            $data = [
+                "status" => "BAD",
+                "message" => $e->getMessage(),
+            ];
+            return JsonResponse::create($data,400);
+        }else{
+            $data = [
+                "status" => "ERROR",
+                "message" => $e->getMessage(),
+                "line" => $e->getLine(),
+                "file" => $e->getFile(),
+                "message" => $e->getMessage(),
+                "class" => get_class($e),
+            ];
 
-        if(env("DEBUG_WITH_TRACE",false)){
-            $data["trace"] = $e->getTrace();
+            if(env("DEBUG_WITH_TRACE",false)){
+                $data["trace"] = $e->getTrace();
+            }
+
+            return JsonResponse::create($data,500);
         }
-
-        return JsonResponse::create($data,500);
     }
-
 }

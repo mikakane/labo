@@ -1,26 +1,31 @@
 <?php
 namespace Chatbox\HttpAuth\Http\Controllers;
 
-
-use Chatbox\Auth\Repositories\UserRepositoryInterface;
-use Chatbox\Auth\Repositories\UserRepositoryNotFoundException;
+use Chatbox\HttpAuth\Http\Request\AuthRequest;
+use Chatbox\HttpAuth\Service\UserRepositoryService;
 
 class ControllerDelete{
 
     use AuthControllerTrait;
 
-    protected $userRepository;
+    protected $authRequest;
 
-    function __construct(UserRepositoryInterface $userRepository)
-    {
-        $this->userRepository = $userRepository;
+    protected $userService;
+
+    function __construct(
+        AuthRequest $authRequest,
+        UserRepositoryService $userRepositoryService
+    ){
+        $this->authRequest = $authRequest;
+        $this->userService = $userRepositoryService;
     }
 
-    public function handle(){
+    public function handle()
+    {
         try{
-            $uid = $this->request()->get("uid");
-            $user = $this->userRepository->getByUid($uid);
-            $this->userRepository->deleteUser($user);
+            $user = $this->authRequest->getUser();
+
+            $this->userService->delete($user);
 
             return $this->response()->ok("user deleted");
         }catch (UserRepositoryNotFoundException $e){

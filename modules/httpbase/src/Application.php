@@ -17,6 +17,8 @@ use Chatbox\HttpBase\Console\Kernel;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
+use Chatbox\HttpBase\Http\Middleware\AppTokenMiddleware;
+
 
 class Application extends \Laravel\Lumen\Application{
 
@@ -30,6 +32,10 @@ class Application extends \Laravel\Lumen\Application{
     protected function setup(){
         $this->singleton(ExceptionHandler::class,Handler::class);
         $this->singleton(KernelInterface::class,Kernel::class);
+
+        $this->routeMiddleware([
+            "appToken" => AppTokenMiddleware::class
+        ]);
     }
 
     public function artisan(){

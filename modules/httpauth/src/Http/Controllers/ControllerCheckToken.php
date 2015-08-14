@@ -19,10 +19,9 @@ class ControllerCheckToken{
 
     protected $tokenRepository;
 
-    function __construct(ActiveToken $token,TokenRepositoryInterface $tokenRepositoryInterface)
+    function __construct(ActiveToken $token)
     {
         $this->token = $token->userToken();
-        $this->tokenRepository = $tokenRepositoryInterface;
     }
 
 

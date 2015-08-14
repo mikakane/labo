@@ -3,6 +3,7 @@ namespace Chatbox\HttpAuth\Http\Controllers;
 
 
 use Chatbox\Auth\Repositories\TokenRepositoryInterface;
+use Chatbox\HttpAuth\Service\UserTokenService;
 use Chatbox\HttpBase\Casket\ActiveToken;
 
 class ControllerLogout{
@@ -12,17 +13,18 @@ class ControllerLogout{
     /** @var \Chatbox\HttpBase\Entity\UserTokenEntity  */
     protected $token;
 
-    protected $tokenRepository;
+    protected $tokenService;
 
-    function __construct(ActiveToken $token,TokenRepositoryInterface $tokenRepositoryInterface)
+    function __construct(
+        ActiveToken $token,
+        UserTokenService $userTokenService)
     {
         $this->token = $token->userToken();
-        $this->tokenRepository = $tokenRepositoryInterface;
+        $this->tokenService = $userTokenService;
     }
 
-
     public function handle(){
-        $this->tokenRepository->deleteUserToken($this->token);
+        $this->tokenService->deleteUserToken($this->token);
         return $this->response()->ok("successfully logouted");
     }
 }

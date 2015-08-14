@@ -7,46 +7,55 @@ namespace Chatbox\HttpBase\Casket;
  * Time: 19:24
  */
 
+use Chatbox\App\Entity\AppEntity;
+use Chatbox\App\Entity\TokenEntity;
+use Chatbox\Auth\Entity\UserEntity;
 use Chatbox\Auth\Repositories\TokenRepositoryInterface;
-use Chatbox\HttpBase\Entity\UserTokenEntity;
-
+use Chatbox\HttpBase\Exceptions\HttpBadRequestException;
 
 /**
- * Casket for multi token
- * You can retrieve active token object that you intend
- * And catch Exception when what on casket isnt match with what you intend
+ * トークン置き場。
  *
- * this class only supply getter of token object.
- *
- *
+ * ミドルウェアからの呼び出しで、シングルトン登録されるべきもの。
  *
  *
  * @package Chatbox\HttpBase\Casket
  */
 class ActiveToken {
 
-    protected $token;
+    /** @var TokenEntity */
+    protected $tokenEntity;
 
-    protected $tokenRepository;
+    /** @var  AppEntity */
+    protected $appEntity;
 
-    function __construct(TokenRepositoryInterface $tokenRepository)
-    {
-        $this->tokenRepository = $tokenRepository;
-    }
-
-    public function authToken(){
-        return $this->token;
+    public function setAppToken(TokenEntity $tokenEntity,AppEntity $appEntity){
+        $this->tokenEntity = $tokenEntity;
+        $this->appEntity = $appEntity;
     }
 
     /**
-     * get user token.
-     * @return UserTokenEntity
+     * @return TokenEntity
      */
-    public function userToken($withExpiredToken=false){
-        return $this->token;
+    public function token()
+    {
+        if($this->tokenEntity instanceof TokenEntity){
+            return $this->tokenEntity;
+        }else{
+            throw new \DomainException("no token supplied");
+        }
     }
 
-    public function rootToken(){
-        return $this->token;
+    /**
+     * @return AppEntity
+     */
+    public function app()
+    {
+        if($this->appEntity instanceof AppEntity){
+            return $this->appEntity;
+        }else{
+            throw new \DomainException("no app supplied");
+        }
     }
+
 }

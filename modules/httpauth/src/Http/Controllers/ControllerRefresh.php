@@ -2,7 +2,6 @@
 namespace Chatbox\HttpAuth\Http\Controllers;
 
 
-use Chatbox\Auth\Repositories\TokenRepositoryInterface;
 use Chatbox\HttpBase\Casket\ActiveToken;
 
 class ControllerRefresh{
@@ -12,12 +11,11 @@ class ControllerRefresh{
     /** @var \Chatbox\HttpBase\Entity\UserTokenEntity  */
     protected $token;
 
-    protected $tokenRepository;
+//    protected $tokenRepository;
 
-    function __construct(ActiveToken $token,TokenRepositoryInterface $tokenRepositoryInterface)
+    function __construct(ActiveToken $token)
     {
         $this->token = $token->userToken(true);
-        $this->tokenRepository = $tokenRepositoryInterface;
     }
 
 

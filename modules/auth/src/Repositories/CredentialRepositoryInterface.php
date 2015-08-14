@@ -12,25 +12,18 @@ use Chatbox\Auth\Entity\UserEntity;
 interface CredentialRepositoryInterface {
 
     /**
-     * クレデンシャルエンティティを作成する。
-     * @param array $credential
-     * @return CredentialEntity
-     */
-    public function create(array $credential);
-
-    /**
      *
      * @param UserEntity $userEntity
      * @return CredentialEntity
      */
-    public function findByUser($uid,$type);
+    public function findByUser($uid,$type,$default=null);
 
     /**
      * @param string $type
      * @param string $hash
      * @return CredentialEntity
      */
-    public function findByTypeAndHash($type,$hash);
+    public function findByTypeAndHash($type,$hash,$default=null);
 
     /**
      * @param UserEntity $userEntity

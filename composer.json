@@ -14,13 +14,14 @@
         "Chatbox\\HttpAuth\\": "modules/httpauth/src",
         "Chatbox\\HttpBase\\": "modules/httpbase/src",
         "Chatbox\\Auth\\": "modules/auth/src",
+        "Chatbox\\App\\": "modules/app/src",
         "Chatbox\\Supports\\": "modules/supports/src"
       }
     },
     "autoload-dev": {
-      "classmap":["./tests/unit/"],
       "psr-4": {
-        "Chatbox\\Auth\\Tests\\": "modules/auth/tests"
+        "Chatbox\\Auth\\Tests\\": "modules/auth/tests",
+        "Chatbox\\App\\Tests\\": "modules/app/tests"
       }
     },
     "require": {

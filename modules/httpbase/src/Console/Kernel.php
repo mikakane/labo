@@ -3,12 +3,11 @@ namespace Chatbox\HttpBase\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
-
-use Chatbox\HttpBase\Console\Commands\DebugConsole;
-
+use Chatbox\HttpBase\Console\Commands\PublishToken;
 
 class Kernel extends ConsoleKernel
 {
+
 
     /**
      * The Artisan commands provided by your application.
@@ -16,7 +15,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        DebugConsole::class
+        PublishToken::class
     ];
 
     /**

@@ -40,7 +40,7 @@ interface UserRepositoryInterface {
      * @throw UserRepositoryNotFoundException
      * @return void
      */
-    public function deleteUser(UserEntity $credentialEntity);
+    public function deleteUser($uid);
 
     /**
      * ユーザエンティティを更新する
@@ -49,7 +49,7 @@ interface UserRepositoryInterface {
      * @throw UserRepositoryNotFoundException
      * @return void
      */
-    public function updateData(UserEntity $credentialEntity);
+    public function updateData(UserEntity $userEntity);
 
 }
 

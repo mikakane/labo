@@ -1,9 +1,9 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.5/phpunit.xsd"
-        backupGlobals="true"
+        backupGlobals="false"
         backupStaticAttributes="false"
-        bootstrap="vendor/autoload.php"
+        bootstrap="bootstrap/app.php"
         cacheTokens="false"
         colors="false"
         convertErrorsToExceptions="true"
@@ -22,9 +22,21 @@
         timeoutForMediumTests="10"
         timeoutForLargeTests="60"
         verbose="false">
-        <testsuites>
-                <testsuite name="Chatbox Auth">
-                        <directory>modules/auth/tests/</directory>
-                </testsuite>
-        </testsuites>
+    <testsuites>
+        <testsuite name="Chatbox App">
+            <directory>modules/app/tests/</directory>
+        </testsuite>
+        <testsuite name="Chatbox Auth">
+            <directory>modules/auth/tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist >
+            <directory suffix=".php">modules/app/src/Repositories</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+        <log type="coverage-html" target="./cover.html" showUncoveredFiles="true"/>
+    </logging>
 </phpunit>

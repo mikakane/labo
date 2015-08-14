@@ -69,6 +69,7 @@ class UserTables {
         $table->timestamp("created_at"); //insert only
 
         $table->unique(["user_uid","type"]);
+        $table->index(["hash","type"]);
 
         $table->foreign("user_uid")->references('user_uid')->on($this->listTable);
     }

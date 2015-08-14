@@ -7,7 +7,7 @@ namespace Chatbox\Auth\Entity;
  * Time: 18:11
  */
 use Carbon\Carbon;
-use Chatbox\Auth\Entity\UserEntity\UserEntityPropertyTrait;
+use Chatbox\Auth\Entity\User\UserEntityPropertyTrait;
 
 class UserEntity{
 

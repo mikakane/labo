@@ -17,8 +17,6 @@ class Application extends \Chatbox\HttpBase\Application{
     public function setup()
     {
         parent::setup();
-
-        $this->register(RouteServiceProvider::class);
     }
 
 

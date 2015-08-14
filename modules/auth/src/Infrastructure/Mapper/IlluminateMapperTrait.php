@@ -4,6 +4,7 @@ namespace Chatbox\Auth\Infrastructure\Mapper;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Query\Builder;
 
+use Chatbox\HttpBase\Casket\ActiveToken;
 /**
  *
  * Created by PhpStorm.
@@ -23,7 +24,13 @@ trait IlluminateMapperTrait {
     {
         /** @var DatabaseManager $db */
         $db = app("db");
-        $table = $db->connection()->table($this->tableName);
+        $table = $db->connection()->table($tableName);
         return $table;
+    }
+
+    protected function getAppId(){
+        /** @var ActiveToken $activeToken */
+        $activeToken = app(ActiveToken::class);
+        return $activeToken->app()->getAppUid();
     }
 }

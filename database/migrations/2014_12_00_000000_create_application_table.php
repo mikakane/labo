@@ -5,10 +5,17 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateApplicationTable extends Migration
 {
-    protected $schema;
+    protected $appSchema;
+    protected $userSchema;
+
+
     public function __construct()
     {
-        $this->schema = new \Chatbox\Auth\Infrastructure\Schema\UserTables(
+        $this->appSchema = new \Chatbox\App\Infrastructure\Schema\AppTables(
+            "cb_app_list",
+            "cb_app_token"
+        );
+        $this->userSchema = new \Chatbox\Auth\Infrastructure\Schema\UserTables(
             "cb_user_list",
             "cb_user_credential"
         );
@@ -17,11 +24,13 @@ class CreateApplicationTable extends Migration
 
     public function up()
     {
-        $this->schema->create();
+        $this->appSchema->create();
+        $this->userSchema->create();
     }
 
     public function down()
     {
-        $this->schema->drop();
+        $this->appSchema->drop();
+        $this->userSchema->drop();
     }
 }

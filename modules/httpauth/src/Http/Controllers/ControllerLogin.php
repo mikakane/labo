@@ -1,71 +1,41 @@
 <?php
 namespace Chatbox\HttpAuth\Http\Controllers;
 
+use Chatbox\HttpAuth\Http\Request\AuthRequest;
+use Chatbox\HttpAuth\Service\UserPersistanceService;
+use Chatbox\HttpAuth\Service\UserRepositoryService;
+use Chatbox\HttpAuth\Service\UserTokenService;
 
-use Chatbox\Auth\Entity\UserEntity;
-use Chatbox\Auth\Repositories\CredentialRepositoryException;
-use Chatbox\Auth\Repositories\CredentialRepositoryInterface;
-use Chatbox\Auth\Repositories\TokenRepositoryInterface;
-use Chatbox\Auth\Repositories\UserRepositoryException;
-use Chatbox\Auth\Repositories\UserRepositoryInterface;
-use Chatbox\Auth\Repositories\UserRepositoryNotFoundException;
-
-/**
- * execute login
- *
- * recieve credential and
- * return binded userInfo
- *
- * @package Chatbox\HttpAuth\Http\Controllers
- */
 class ControllerLogin{
 
     use AuthControllerTrait;
 
-    protected $userRepository;
-    protected $credentailRepository;
-    protected $tokenRepotisotry;
+    protected $authRequest;
+
+    protected $userService;
+
+    protected $tokenService;
 
     function __construct(
-        CredentialRepositoryInterface $credentialRepositoryInterface,
-        UserRepositoryInterface $userRepositoryInterface,
-        TokenRepositoryInterface $tokenRepositoryInterface
-    )
+        AuthRequest $authRequest,
+        UserRepositoryService $userRepositoryService,
+        UserTokenService $userTokenService
+    ){
+        $this->authRequest = $authRequest;
+        $this->userService = $userRepositoryService;
+        $this->tokenService = $userTokenService;
+    }
+
+    public function handle()
     {
-        $this->userRepository = $userRepositoryInterface;
-        $this->credentailRepository = $credentialRepositoryInterface;
-        $this->tokenRepotisotry = $tokenRepositoryInterface;
-    }
+        $user = $this->authRequest->getUserByCredential();
 
-
-    public function handle(){
-        try{
-            $withToken = $this->request()->get("withToken",false);
-
-            $credential = $this->credentailRepository->findByTypeAndHash(
-                $this->request()->get("type"),
-                $this->request()->get("hash")
-            );
-            $user = $this->userRepository->getByUid($credential->getUid());
-            return $this->regularHandler($user,$withToken);
-        }catch (CredentialRepositoryException $e){
-            return $this->response()->bad("invalid credential format");
-        }catch (UserRepositoryNotFoundException $e){
-            return $this->response()->bad("cant find user data");
-        }
-    }
-
-    protected function regularHandler(UserEntity $user,$withToken){
         $response = $this->response()->setUser($user);
-
-        if($withToken){
-            $token = $this->tokenRepotisotry->createUserToken($user);
+        if($this->authRequest->withToken()){
+            $token = $this->tokenService->createUserToken($user);
             $response->setUserToken($token);
         }
 
         return $response;
     }
-
-
 }
-

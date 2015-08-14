@@ -2,8 +2,12 @@
 namespace Chatbox\Auth\Infrastructure\Mapper;
 
 use Carbon\Carbon;
+use Chatbox\App\Entity\AppEntity;
 use Chatbox\Auth\Entity\CredentialEntity;
 use Chatbox\Auth\Entity\UserEntity;
+use Chatbox\HttpBase\Casket\ActiveToken;
+use Illuminate\Contracts\Console\Application;
+
 /**
  * Created by PhpStorm.
  * User: mkkn
@@ -24,7 +28,6 @@ class CredentialMapper
     public function __construct($tableName)
     {
         $this->table = $this->getTable($tableName);
-        $this->appId = "hogehoge";
     }
 
     /**
@@ -42,6 +45,21 @@ class CredentialMapper
         }
     }
 
+    /**
+     * @param $uid
+     * @return UserEntity
+     */
+    public function findByHash($type,$hash,$default=null){
+        $cond = $this->typeHashCondition($type,$hash);
+        $rowObj = $this->table->where($cond)->first();
+
+        if($rowObj){
+            return $this->convToUserEntity($rowObj);
+        }else{
+            return $default;
+        }
+    }
+
 
     public function insert(CredentialEntity $credentialEntity)
     {
@@ -49,9 +67,9 @@ class CredentialMapper
         $this->table->insert($rowArray);
     }
 
-    public function delete(CredentialEntity $credentialEntity)
+    public function delete($uid,$type)
     {
-        $cond = $this->uidTypeCondition($credentialEntity->getUserUid(),$credentialEntity->getType());
+        $cond = $this->uidTypeCondition($uid,$type);
         $this->table->delete()->where($cond);
     }
 
@@ -59,6 +77,13 @@ class CredentialMapper
         return [
             "uid" => $uid,
             "type" => $type
+        ];
+    }
+
+    protected function typeHashCondition($type,$hash){
+        return [
+            "type" => $type,
+            "hash" => $hash
         ];
     }
 
@@ -77,7 +102,7 @@ class CredentialMapper
     {
         $data = [
             "user_uid" => $credentialEntity->getUserUid(),
-            "app_id" => $this->appId,
+            "app_id" => $this->getAppId(),
             "type" => $credentialEntity->getType(),
             "hash" => $credentialEntity->getHash(),
             "created_at" => Carbon::now()

@@ -2,7 +2,11 @@
 namespace Chatbox\Auth\Infrastructure\Mapper;
 
 use Carbon\Carbon;
+use Chatbox\App\Entity\AppEntity;
+use Chatbox\App\Entity\TokenEntity;
 use Chatbox\Auth\Entity\UserEntity;
+use Chatbox\HttpBase\Casket\ActiveToken;
+
 /**
  * Created by PhpStorm.
  * User: mkkn
@@ -16,8 +20,6 @@ class UserMapper
     /** @var \Illuminate\Database\Query\Builder  */
     protected $table;
 
-    protected $appId;
-
     /**
      * UserMapper constructor.
      * @param $tableName
@@ -25,7 +27,6 @@ class UserMapper
     public function __construct($tableName)
     {
         $this->table = $this->getTable($tableName);
-        $this->appId = "hogehoge";
     }
 
     /**
@@ -55,9 +56,9 @@ class UserMapper
         $this->table->update($rowArray)->where("uid",$userEntity->getUid());
     }
 
-    public function delete(UserEntity $userEntity)
+    public function delete($uid)
     {
-        $this->table->delete()->where("uid",$userEntity->getUid());
+        $this->table->delete()->where("uid",$uid);
     }
 
     protected function convToUserEntity($rowObj)
@@ -76,7 +77,7 @@ class UserMapper
     {
         $data = [
             "uid" => $userEntity->getUid(),
-            "app_id" => $this->appId,
+            "app_id" => $this->getAppId(),
             "email" => $userEntity->getEmail(),
             "is_frozen" => $userEntity->getIsForzen(),
             "created_at" => $userEntity->getRegisterdAt(),

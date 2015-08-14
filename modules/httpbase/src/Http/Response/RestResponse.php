@@ -7,6 +7,7 @@ namespace Chatbox\HttpBase\Http\Response;
  * Time: 23:33
  */
 
+use Chatbox\App\Entity\AppEntity;
 use Illuminate\Http\JsonResponse;
 
 class RestResponse {
@@ -58,6 +59,14 @@ class RestResponse {
 
     public function error($dataOrMessage=null){
         return $this->setData($dataOrMessage)->setStatus(500)->render();
+    }
+
+    public function setApp(AppEntity $appEntity){
+        return $this->setData([
+            "app" => [
+                "name" => $appEntity->getName(),
+            ]
+        ]);
     }
 
 }
