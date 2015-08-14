@@ -7,10 +7,7 @@ use Chatbox\HttpBase\Casket\ActiveToken;
 use Chatbox\HttpBase\Exceptions\HttpBadRequestException;
 
 /**
- * Created by PhpStorm.
- * User: mkkn
- * Date: 15/08/09
- * Time: 8:30
+ * トークンの操作に関するサービス
  */
 class AppTokenRepositoryService
 {
@@ -26,19 +23,18 @@ class AppTokenRepositoryService
      */
     public function __construct(
         AppRepositoryInterface $appRepositoryInterface,
-        TokenRepositoryInterface $tokenRepositoryInterface,
-        ActiveToken $activeToken
+        TokenRepositoryInterface $tokenRepositoryInterface
     ){
         $this->appRepository = $appRepositoryInterface;
         $this->tokenRepository = $tokenRepositoryInterface;
-        $this->activeToken = $activeToken;
     }
 
     /**
+     * トークンキーからトークンエンティティを取得する。
      * @param $token
      * @return void
      */
-    public function setAppToken($token){
+    public function createActiveToken($token){
         $type = "app";
         $token = $this->tokenRepository->loadToken($token,$type);
         if(!$token){
@@ -48,7 +44,6 @@ class AppTokenRepositoryService
         if(! $app instanceof AppEntity){
             throw new \DomainException("invalid token : missing application");
         }
-
-        $this->activeToken->setAppToken($token,$app);
+        return new ActiveToken($token,$app);
     }
 }

@@ -29,7 +29,7 @@ class ActiveToken {
     /** @var  AppEntity */
     protected $appEntity;
 
-    public function setAppToken(TokenEntity $tokenEntity,AppEntity $appEntity){
+    public function __construct(TokenEntity $tokenEntity,AppEntity $appEntity){
         $this->tokenEntity = $tokenEntity;
         $this->appEntity = $appEntity;
     }

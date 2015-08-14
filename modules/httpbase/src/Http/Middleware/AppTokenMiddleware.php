@@ -4,6 +4,7 @@ namespace Chatbox\HttpBase\Http\Middleware;
 use Chatbox\HttpBase\Service\AppTokenRepositoryService;
 use Closure;
 use Illuminate\Http\Request;
+use Chatbox\HttpBase\Casket\ActiveToken;
 
 class AppTokenMiddleware
 {
@@ -32,7 +33,9 @@ class AppTokenMiddleware
     {
         $tokenKey = $request->input("token");
 
-        $this->appTokenService->setAppToken($tokenKey);
+        app()->singleton(ActiveToken::class,function()use($tokenKey){
+            return $this->appTokenService->createActiveToken($tokenKey);
+        });
 
         return $next($request);
     }

@@ -13,7 +13,6 @@ class ControllerInfo{
     public function handle(
         ActiveToken $activeToken
     ){
-
         return $this->response()->setApp($activeToken->app())->ok();
 //        try{
 //            $uid = $this->request()->get("uid");
